@@ -1,6 +1,8 @@
 
 # DiscordEval.js
 
+⚠️THIS PACKAGE IS NOT LONGER SUPPORTED, PLEASE USE [`discord-eval.ts`](https://www.npmjs.com/package/discord-eval.ts) INSTEAD ⚠️
+
 ## Install
 
 ```

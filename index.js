@@ -6,8 +6,9 @@ const codeInBlock = /^```(?:js)?\s(.+[^\\])```$/is;
  * Make an object with eval results
  * @param {string} code
  * @param {module:"discord.js".Message} message
+ * @param {boolean} muted
  */
-module.exports = async function (code, message) {
+module.exports = async function (code, message, muted) {
   if (!code || message.system || message.author.bot) return;
 
   /**
@@ -27,11 +28,13 @@ module.exports = async function (code, message) {
   if (code.includes("await")) {
     code = `async () => {${code}}`;
 
-    let embed = new Discord.MessageEmbed()
-      .setTitle("DiscordEval")
-      .setDescription(`Running...`);
+    if (!muted) {
+      let embed = new Discord.MessageEmbed()
+        .setTitle("DiscordEval")
+        .setDescription(`Running...`);
 
-    editable = await message.channel.send(embed);
+      editable = await message.channel.send(embed);
+    }
   } else {
     code = `() => {${code}}`;
   }
@@ -42,6 +45,8 @@ module.exports = async function (code, message) {
   } catch (err) {
     out = err;
   }
+
+  if (muted) return;
 
   let classe = "void";
   if (out !== undefined && out !== null) {
